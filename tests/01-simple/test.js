@@ -5,17 +5,16 @@ import { Counter } from "k6/metrics";
 let ErrorCount = new Counter("errors");
 
 export const options = {
-  vus: 10,
-  duration: "15s",
+  vus: 1000,
+  duration: "5m",
   thresholds: {
     errors: ["count<10"]
   }
 };
 
 export default function() {
-  const path = Math.random() < 0.9 ? "200" : "500";
 
-  let res = http.get(`https://httpbin.test.loadimpact.com/status/${path}`);
+  let res = http.get(`http://host.docker.internal:5000/events/3378706c-bbd5-4729-bd53-52e918564724/users/test`);
   let success = check(res, {
     "status is 200": r => r.status === 200
   });
